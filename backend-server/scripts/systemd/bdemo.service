@@ -1,0 +1,14 @@
+[Unit]
+Description=rater backend service
+After=network.target
+
+[Service]
+ExecStart=/var/rater/backend-server
+LimitNOFILE=65535
+Restart=on-failure
+#User=bdemo
+#Group=bdemo
+
+[Install]
+WantedBy=multi-user.target
+
