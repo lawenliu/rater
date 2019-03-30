@@ -81,8 +81,8 @@ func (c *UserController) Login() {
 	}
 
 	user := models.User{}
-	if code, err := user.FindByID(form.Name); err != nil {
-		beego.Error("FindUserById:", err)
+	if code, err := user.FindByName(form.Name); err != nil {
+		beego.Error("FindUserByName:", err)
 		if code == models.ErrNotFound {
 			c.Data["json"] = models.NewErrorInfo(ErrNoUser)
 		} else {

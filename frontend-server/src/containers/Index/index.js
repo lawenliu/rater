@@ -37,7 +37,7 @@ class Index extends React.Component{
               <ContentMain/>
             </Content>
             <Footer style={{textAlign: 'center'}}>
-              <p>Lazy Lady ©2019 Created by lwc541117@hotmail.com </p>
+              <p>Lazy Bones ©2019 Created by lwc541117@hotmail.com </p>
               <a target='_blank' rel='noopener noreferrer' href='https://github.com/lawenliu'>github地址</a>
             </Footer>
           </Layout>

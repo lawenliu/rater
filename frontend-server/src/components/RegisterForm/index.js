@@ -18,6 +18,15 @@ class RegisterForm extends React.Component {
     })
     this.props.form.validateFields((err, values) => {
       if (!err) {
+        if (values.registerPassword && values.registerPassword.length < 6) {
+          this.props.form.setFields({
+            registerUsername: {
+              value: values.registerUsername,
+              errors: [new Error('密码需要大于6位')]
+            }
+          })
+          return
+        }
         this.registerAsync(values.registerUsername, values.registerPassword)
       }
     })

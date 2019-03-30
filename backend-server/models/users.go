@@ -95,24 +95,25 @@ func (u *User) Insert() (code int, err error) {
 	return 0, nil
 }
 
-// FindByID query a document according to input id.
-func (u *User) FindByID(id string) (code int, err error) {
+// FindByName query a document according to input id.
+func (u *User) FindByName(name string) (code int, err error) {
 	db := mymysql.Conn()
 
-	st, err := db.Prepare("SELECT id, phone, name, password, reg_date FROM users WHERE id = ?")
+	st, err := db.Prepare("SELECT id, phone, name, salt, password, reg_date FROM users WHERE name = ?")
 	if err != nil {
 		return ErrDatabase, err
 	}
 	defer st.Close()
 
-	row := st.QueryRow(id)
+	row := st.QueryRow(name)
 
 	var tmpID sql.NullInt64
 	var tmpPhone sql.NullString
 	var tmpName sql.NullString
+	var tmpSalt sql.NullString
 	var tmpPassword sql.NullString
 	var tmpRegDate mysql.NullTime
-	if err := row.Scan(&tmpID, &tmpPhone, &tmpName, &tmpPassword, &tmpRegDate); err != nil {
+	if err := row.Scan(&tmpID, &tmpPhone, &tmpName, &tmpSalt, &tmpPassword, &tmpRegDate); err != nil {
 		// Not found.
 		if err == sql.ErrNoRows {
 			return ErrNotFound, err
@@ -129,6 +130,9 @@ func (u *User) FindByID(id string) (code int, err error) {
 	}
 	if tmpName.Valid {
 		u.Name = tmpName.String
+	}
+	if tmpSalt.Valid {
+		u.Salt = tmpSalt.String
 	}
 	if tmpPassword.Valid {
 		u.Password = tmpPassword.String

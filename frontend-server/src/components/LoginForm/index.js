@@ -2,9 +2,9 @@ import React from 'react'
 import superagent from 'superagent';
 import { withRouter } from 'react-router-dom'
 import { inject, observer } from 'mobx-react/index'
-import {USER_REGISTER_URL} from '../../utils/Constants'
+import {USER_LOGIN_URL} from '../../utils/Constants'
 import PromptBox from '../../components/PromptBox'
-import { Form, Input, Row, Col } from 'antd'
+import { Form, Input, Row, Col, message } from 'antd'
 import { randomNum, calculateWidth } from '../../utils/utils'
 
 @withRouter @inject('appStore') @observer @Form.create()
@@ -23,7 +23,9 @@ class LoginForm extends React.Component {
    */
   createCode = () => {
     const ctx = this.canvas.getContext('2d')
-    const chars = [1, 2, 3, 4, 5, 6, 7, 8, 9, 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+    const chars = [1, 2, 3, 4, 5, 6, 7, 8, 9,
+      'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+      'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
     let code = ''
     ctx.clearRect(0, 0, 80, 39)
     for (let i = 0; i < 4; i++) {
@@ -68,38 +70,39 @@ class LoginForm extends React.Component {
           })
           return
         }
-
-        const users = this.props.appStore.users
-        // 检测用户名是否存在
-        const result = users.find(item => item.username === values.username)
-        if (!result) {
-          this.props.form.setFields({
-            username: {
-              value: values.username,
-              errors: [new Error('用户名不存在')]
-            }
-          })
-          return
-        } else {
-          //检测密码是否错误
-          if (result.password !== values.password) {
-            this.props.form.setFields({
-              password: {
-                value: values.password,
-                errors: [new Error('密码错误')]
-              }
-            })
-            return
-          }
-        }
-
-        this.props.appStore.toggleLogin(true, {username: values.username})
-
-        const {from} = this.props.location.state || {from: {pathname: '/'}}
-        this.props.history.push(from)
+        this.loginAsync(values.username, values.password);
       }
     })
   }
+
+  loginAsync(username, password) {
+    var obj = this;
+    function callback(error, response) {
+      if (!error && (response.statusCode === 401 || response.statusCode === 403)) {
+        message.error('系统错误');
+      } else if (!error && response.statusCode === 200) {
+        const jsonRes = JSON.parse(response.text);
+        if (jsonRes.code === 0) {
+          obj.props.appStore.toggleLogin(true, {"username": username})
+          const {from} = obj.props.location.state || {from: {pathname: '/'}}
+          obj.props.history.push(from)
+        } else {
+          message.error(jsonRes.info);
+        }
+      } else {
+        message.error("网络错误");
+      }
+    }
+
+    superagent.post(USER_LOGIN_URL)
+    .field('name', username)
+    .field('password', password)
+    //.withCredentials()
+    .set('Accept', 'application/json')
+    //.set('Content-Type', 'multipart/form-data')
+    .end(callback);
+  }
+
   register = () => {
     this.props.switchShowBox('register')
     setTimeout(() => this.props.form.resetFields(), 500)
