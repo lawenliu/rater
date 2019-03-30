@@ -8,7 +8,7 @@ const menus = [
     key: '/home'
   },
   {
-    title: '基本组件',
+    title: '图片专享',
     icon: 'laptop',
     key: '/home/general',
     subs: [
@@ -17,7 +17,7 @@ const menus = [
     ]
   },
   {
-    title: '导航组件',
+    title: '视频专享',
     icon: 'bars',
     key: '/home/navigation',
     subs: [
@@ -27,7 +27,7 @@ const menus = [
     ]
   },
   {
-    title: '输入组件',
+    title: '购物专享',
     icon: 'edit',
     key: '/home/entry',
     subs: [
@@ -44,7 +44,7 @@ const menus = [
     ]
   },
   {
-    title: '显示组件',
+    title: '吃货专享',
     icon: 'desktop',
     key: '/home/display',
     subs: [
@@ -56,7 +56,7 @@ const menus = [
     ]
   },
   {
-    title: '反馈组件',
+    title: '旅游专享',
     icon: 'message',
     key: '/home/feedback',
     subs: [

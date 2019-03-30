@@ -56,7 +56,6 @@ func NewUser(r *RegisterForm, t time.Time) (u *User, err error) {
 	}
 
 	user := User{
-		Phone:       r.Phone,
 		Name:     r.Name,
 		Password: hash,
 		Salt:     salt,
@@ -71,14 +70,14 @@ func (u *User) Insert() (code int, err error) {
 	db := mymysql.Conn()
 	//defer db.Close()
 
-	st, err := db.Prepare("INSERT INTO users(phone, name, password, salt, reg_date) VALUES(?, ?, ?, ?, ?)")
+	st, err := db.Prepare("INSERT INTO users(name, password, salt, reg_date) VALUES(?, ?, ?, ?)")
 	if err != nil {
 		return ErrDatabase, err
 	}
 	defer st.Close()
 
 	//if result, err := st.Exec(
-	if _, err := st.Exec(u.Phone, u.Name, u.Password, u.Salt, u.RegDate); err != nil {
+	if _, err := st.Exec(u.Name, u.Password, u.Salt, u.RegDate); err != nil {
 		if e, ok := err.(*mysql.MySQLError); ok {
 			//Duplicate key
 			if e.Number == 1062 {

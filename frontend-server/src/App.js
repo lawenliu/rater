@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import PrivateRoute from './components/PrivateRoute'
 import {Route,Switch} from 'react-router-dom'
-import Login from './routes/Login/index'
-// import Login from './routes/Login2/index'
-import Index from './routes/Index/index'
-import './App.css'
+import Login from './containers/Login/index'
+// import Login from './containers/Login2/index'
+import Index from './containers/Index/index'
+import './styles/App.css'
 import './assets/font/iconfont.css'
 
 

@@ -81,7 +81,7 @@ func (c *UserController) Login() {
 	}
 
 	user := models.User{}
-	if code, err := user.FindByID(form.Phone); err != nil {
+	if code, err := user.FindByID(form.Name); err != nil {
 		beego.Error("FindUserById:", err)
 		if code == models.ErrNotFound {
 			c.Data["json"] = models.NewErrorInfo(ErrNoUser)
@@ -105,7 +105,7 @@ func (c *UserController) Login() {
 	}
 	user.ClearPass()
 
-	c.SetSession("user_id", form.Phone)
+	c.SetSession("user_id", form.Name)
 
 	c.Data["json"] = &models.LoginInfo{Code: 0, UserInfo: &user}
 	c.ServeJSON()
@@ -129,7 +129,7 @@ func (c *UserController) Logout() {
 		return
 	}
 
-	if c.GetSession("user_id") != form.Phone {
+	if c.GetSession("user_id") != form.Name {
 		c.Data["json"] = models.NewErrorInfo(ErrInvalidUser)
 		c.ServeJSON()
 		return
@@ -159,13 +159,13 @@ func (c *UserController) Passwd() {
 		return
 	}
 
-	if c.GetSession("user_id") != form.Phone {
+	if c.GetSession("user_id") != form.Name {
 		c.Data["json"] = models.NewErrorInfo(ErrInvalidUser)
 		c.ServeJSON()
 		return
 	}
 
-	code, err := models.ChangePass(form.Phone, form.OldPass, form.NewPass)
+	code, err := models.ChangePass(form.Name, form.OldPass, form.NewPass)
 	if err != nil {
 		beego.Error("ChangeUserPass:", err)
 		if code == models.ErrNotFound {
@@ -201,7 +201,7 @@ func (c *UserController) Uploads() {
 		return
 	}
 
-	if c.GetSession("user_id") != form.Phone {
+	if c.GetSession("user_id") != form.Name {
 		c.Data["json"] = models.NewErrorInfo(ErrInvalidUser)
 		c.ServeJSON()
 		return
