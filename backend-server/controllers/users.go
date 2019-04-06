@@ -1,12 +1,6 @@
 package controllers
 
 import (
-	"crypto/md5"
-	"fmt"
-	"io"
-	"net/http"
-	"os"
-	"path/filepath"
 	"time"
 
 	"rater/backend-server/models"
@@ -181,88 +175,4 @@ func (c *UserController) Passwd() {
 
 	c.Data["json"] = models.NewNormalInfo("Succes")
 	c.ServeJSON()
-}
-
-// Uploads method.
-func (c *UserController) Uploads() {
-	form := models.UploadsForm{}
-	if err := c.ParseForm(&form); err != nil {
-		beego.Debug("ParseUploadsForm:", err)
-		c.Data["json"] = models.NewErrorInfo(ErrInputData)
-		c.ServeJSON()
-		return
-	}
-	beego.Debug("ParseUploadsForm:", &form)
-
-	if err := c.VerifyForm(&form); err != nil {
-		beego.Debug("ValidUploadsForm:", err)
-		c.Data["json"] = models.NewErrorInfo(ErrInputData)
-		c.ServeJSON()
-		return
-	}
-
-	if c.GetSession("user_id") != form.Name {
-		c.Data["json"] = models.NewErrorInfo(ErrInvalidUser)
-		c.ServeJSON()
-		return
-	}
-
-	//files := c.Ctx.Request.MultipartForm.File["photos"]
-	files, err := c.GetFiles("photos")
-	if err != nil {
-		beego.Debug("GetFiles:", err)
-		c.Data["json"] = models.NewErrorInfo(ErrInputData)
-		c.ServeJSON()
-		return
-	}
-	for i := range files {
-		src, err := files[i].Open()
-		if err != nil {
-			beego.Error("Open MultipartForm File:", err)
-			c.Data["json"] = models.NewErrorInfo(ErrOpenFile)
-			c.ServeJSON()
-			return
-		}
-		defer src.Close()
-
-		hash := md5.New()
-		if _, err := io.Copy(hash, src); err != nil {
-			beego.Error("Copy File to Hash:", err)
-			c.Data["json"] = models.NewErrorInfo(ErrWriteFile)
-			c.ServeJSON()
-			return
-		}
-		hex := fmt.Sprintf("%x", hash.Sum(nil))
-
-		dst, err := os.Create(beego.AppConfig.String("apppath") + "static/" + hex + filepath.Ext(files[i].Filename))
-		if err != nil {
-			beego.Error("Create File:", err)
-			c.Data["json"] = models.NewErrorInfo(ErrWriteFile)
-			c.ServeJSON()
-		}
-		defer dst.Close()
-
-		src.Seek(0, 0)
-		if _, err := io.Copy(dst, src); err != nil {
-			beego.Error("Copy File:", err)
-			c.Data["json"] = models.NewErrorInfo(ErrWriteFile)
-			c.ServeJSON()
-			return
-		}
-	}
-
-	c.Data["json"] = models.NewNormalInfo("Succes")
-	c.ServeJSON()
-}
-
-// Downloads method.
-func (c *UserController) Downloads() {
-	if c.GetSession("user_id") == nil {
-		c.Data["json"] = models.NewErrorInfo(ErrInvalidUser)
-		c.ServeJSON()
-		return
-	}
-
-	file := beego.AppConfig.String("apppath") + "logs/test.log"
-	http.ServeFile(c.Ctx.ResponseWriter, c.Ctx.Request, file)
 }

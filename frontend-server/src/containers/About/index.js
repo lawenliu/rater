@@ -7,7 +7,7 @@ export default class About extends React.Component{
     return (
       <div>
         <CustomBreadcrumb arr={['关于']}/>
-        <TypingCard source={'这个人很懒，什么也没留下...'} title='关于' />
+        <TypingCard source={'让生活变成美好体验...'} title='关于' />
       </div>
     )
   }

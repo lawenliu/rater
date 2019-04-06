@@ -1,0 +1,14 @@
+{
+  "update_date": "2018-09-17 18:53",
+  "appkeys": {
+      "7f095d84e4c6727abf789df3dce8e675": "testing",
+      "5d702d58446a11e8a6888cec4b45cd20": "http_access_layer",
+      "5d700648446a11e8a8a78cec4b45cd20": "ai_teacher",
+      "f6140f78533f11e88a3e8cec4b45cd20": "pep(old)",
+      "cfd15778537411e89c888cec4b45cd20": "dub",
+      "7feb949e811211e880d28cec4b45cd20": "pri_word_score",
+      "bff839e8833011e88ada8cec4b45cd20": "pep(new)",
+      "799c4062ab4011e8a8298cec4b45cd20": "pri_chinese",
+      "799c6770ab4011e881778cec4b45cd20": "dubbing_with_score"
+  }
+}

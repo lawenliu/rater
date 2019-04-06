@@ -14,9 +14,16 @@ func init() {
 			beego.NSRouter("/login", &controllers.UserController{}, "post:Login"),
 			beego.NSRouter("/logout", &controllers.UserController{}, "post:Logout"),
 			beego.NSRouter("/passwd", &controllers.UserController{}, "post:Passwd"),
-			beego.NSRouter("/uploads", &controllers.UserController{}, "post:Uploads"),
-			beego.NSRouter("/downloads", &controllers.UserController{}, "get:Downloads"),
 		),
+		beego.NSNamespace("/medias",
+			beego.NSRouter("/upload", &controllers.MediaController{}, "post:Upload"),
+			beego.NSRouter("/download", &controllers.MediaController{}, "post:Download"),
+		),
+		beego.NSNamespace("/posters",
+			beego.NSRouter("/upload", &controllers.PosterController{}, "post:Upload"),
+			beego.NSRouter("/download", &controllers.PosterController{}, "post:Download"),
+		),
+
 	)
 	beego.AddNamespace(ns)
 }

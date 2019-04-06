@@ -51,7 +51,7 @@ class RegisterForm extends React.Component {
     superagent.post(USER_REGISTER_URL)
     .field('name', username)
     .field('password', password)
-    //.withCredentials()
+    .withCredentials()
     .set('Accept', 'application/json')
     //.set('Content-Type', 'multipart/form-data')
     .end(callback);
@@ -68,7 +68,7 @@ class RegisterForm extends React.Component {
     return (
       <div className={this.props.className}>
         <div>{this.props.appStore.message}</div>
-        <h3 className='title'>贵人注册</h3>
+        <h3 className='title'>用户注册</h3>
         <Form onSubmit={this.registerSubmit}>
           <Form.Item help={getFieldError('registerUsername') && <PromptBox info={getFieldError('registerUsername')}
                                                                            width={calculateWidth(getFieldError('registerUsername'))}/>}>

@@ -20,6 +20,7 @@ const (
 	ErrNoUserPass   = "用户信息不存在或密码不正确"
 	ErrNoUserChange = "用户信息不存在或数据未改变"
 	ErrInvalidUser  = "用户信息不正确"
+	ErrDupFile      = "文件已存在"
 	ErrOpenFile     = "打开文件出错"
 	ErrWriteFile    = "写文件出错"
 	ErrSystem       = "操作系统错误"

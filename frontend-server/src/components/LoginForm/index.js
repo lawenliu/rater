@@ -97,7 +97,7 @@ class LoginForm extends React.Component {
     superagent.post(USER_LOGIN_URL)
     .field('name', username)
     .field('password', password)
-    //.withCredentials()
+    .withCredentials()
     .set('Accept', 'application/json')
     //.set('Content-Type', 'multipart/form-data')
     .end(callback);
@@ -113,7 +113,7 @@ class LoginForm extends React.Component {
     const {focusItem, code} = this.state
     return (
       <div className={this.props.className}>
-        <h3 className='title'>贵人登录</h3>
+        <h3 className='title'>用户登录</h3>
         <Form onSubmit={this.loginSubmit}>
           <Form.Item help={getFieldError('username') &&
           <PromptBox info={getFieldError('username')} width={calculateWidth(getFieldError('username'))}/>}>

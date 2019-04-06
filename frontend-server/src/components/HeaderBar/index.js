@@ -11,7 +11,6 @@ class HeaderBar extends React.Component {
   state = {
     icon: 'arrows-alt',
     count: 100,
-    visible: false,
     avatar: require('./img/04.jpg')
   }
 
@@ -40,8 +39,20 @@ class HeaderBar extends React.Component {
     this.props.history.push(this.props.location.pathname)
   }
 
+  personal = () => {
+    this.props.history.push('/manage/profile/info')
+  }
+
+  setting = () => {
+    this.props.history.push('/manage/profile/chpwd')
+  }
+
+  help = () => {
+    this.props.history.push('/manage/info/help')
+  }
+
   render () {
-    const {icon, count, visible, avatar} = this.state
+    const {icon, count, avatar} = this.state
     const {appStore, collapsed, location} = this.props
     const notLogin = (
       <div>
@@ -51,20 +62,19 @@ class HeaderBar extends React.Component {
     )
     const menu = (
       <Menu className='menu'>
-        <Menu.ItemGroup title='用户中心' className='menu-group'>
-          <Menu.Item>你好 - {isAuthenticated()}</Menu.Item>
-          <Menu.Item>个人信息</Menu.Item>
-          <Menu.Item><span onClick={this.logout}>退出登录</span></Menu.Item>
+        <Menu.ItemGroup title={`你好${isAuthenticated()}`} className='menu-group'>
+          <Menu.Item><Icon type='setting'/><span onClick={this.personal}>个人中心</span></Menu.Item>
+          <Menu.Item><Icon type='setting'/><span onClick={this.setting}>修改密码</span></Menu.Item>
         </Menu.ItemGroup>
         <Menu.ItemGroup title='设置中心' className='menu-group'>
-          <Menu.Item>个人设置</Menu.Item>
-          <Menu.Item>系统设置</Menu.Item>
+          <Menu.Item><Icon type='setting'/><span onClick={this.help}>帮助文档</span></Menu.Item>
+          <Menu.Item><Icon type='setting'/><span onClick={this.logout}>退出登录</span></Menu.Item>
         </Menu.ItemGroup>
       </Menu>
     )
     const login = (
       <Dropdown overlay={menu}>
-        <img onClick={() => this.setState({visible: true})} src={avatar} alt=""/>
+        <img src={avatar} alt=""/>
       </Dropdown>
     )
     return (
@@ -86,13 +96,7 @@ class HeaderBar extends React.Component {
             </li>
           </ul>
         </div>
-        <Modal
-          footer={null} closable={false}
-          visible={visible}
-          wrapClassName="vertical-center-modal"
-          onCancel={() => this.setState({visible: false})}>
-          <img src={avatar} alt="" width='100%'/>
-        </Modal>
+
       </div>
     )
   }

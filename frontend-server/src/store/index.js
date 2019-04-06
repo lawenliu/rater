@@ -1,8 +1,6 @@
 import appStore from './stores/appStore'
-import stepFormStore from '../containers/Entry/FormDemo/store'
 
 const store = {
-  appStore,
-  stepFormStore
+  appStore
 }
 export default store

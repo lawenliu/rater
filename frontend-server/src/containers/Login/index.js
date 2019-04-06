@@ -1,18 +1,15 @@
 import React from 'react'
 import BGParticle from '../../utils/BGParticle'
-
-import './style.css'
-
 import { withRouter } from 'react-router-dom'
 import { inject, observer } from 'mobx-react/index'
 //import Loading from '../../components/Loading'
-import Loading2 from '../../components/Loading2'
+import Loading2 from '../../components/Loading'
 import LoginForm from '../../components/LoginForm'
 import RegisterForm from '../../components/RegisterForm'
-
+import './style.css'
 import 'animate.css'
 
-const url = 'https://github.com/zhangZhiHao1996/image-store/blob/master/react-admin-master/bg1.jpg?raw=true'
+const url = 'http://localhost:8080/static/res/bg1.jpg'
 
 @withRouter @inject('appStore') @observer
 class Login extends React.Component {
@@ -107,7 +104,7 @@ const styles = {
     left: '0',
     width: '100vw',
     height: '100vh',
-    backgroundImage: 'url(https://github.com/zhangZhiHao1996/image-store/blob/master/react-admin-master/bg1.jpg?raw=true)',
+    backgroundImage: 'url(http://localhost:8080/static/res/bg1.jpg)',
     backgroundSize: '100% 100%',
     transition:'all .5s'
   },
